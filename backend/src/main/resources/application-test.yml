@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:tickets;DB_CLOSE_DELAY=-1
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  autoconfigure:
+    exclude:
+      - org.springframework.ai.autoconfigure.ollama.OllamaAutoConfiguration
+
+app:
+  rag:
+    similarity-threshold: 0.0
+    persist-on-shutdown: false
