@@ -12,10 +12,10 @@
     </parent>
 
     <groupId>com.support</groupId>
-    <artifactId>ticket-service</artifactId>
+    <artifactId>ticket-management-system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ticket-service</name>
-    <description>AI Support Ticket Management</description>
+    <name>ticket-management-system</name>
+    <description>Ticket Management System</description>
 
     <properties>
         <java.version>21</java.version>

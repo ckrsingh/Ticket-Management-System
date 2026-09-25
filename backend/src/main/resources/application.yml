@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ticket-service
+    name: ticket-management-system
   profiles:
     active: dev
   datasource:

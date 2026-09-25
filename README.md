@@ -1,4 +1,8 @@
-# AI-Powered Support Ticket Management
+# Ticket Management System
+
+GitHub: [ckrsingh/-Ticket-Management-System](https://github.com/ckrsingh/-Ticket-Management-System)
+
+> **Note:** The repository name includes a leading hyphen (`-Ticket-Management-System`). If you meant `Ticket-Management-System`, rename the repo under GitHub **Settings → General → Repository name** and update `git remote set-url origin` accordingly.
 
 Spec-driven support desk with **Java 21 / Spring Boot / Spring AI** backend, **Next.js** UI, and **RAG** over ticket history (`POST /api/ai/ask`).
 
