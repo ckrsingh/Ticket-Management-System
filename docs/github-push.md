@@ -1,13 +1,41 @@
 # GitHub push troubleshooting
 
+## `repository not found` for Ticket-Management-System
+
+If you see:
+
+```text
+fatal: repository 'https://github.com/ckrsingh/Ticket-Management-System.git/' not found
+```
+
+the repo on GitHub is **`ckrsingh/-Ticket-Management-System`** (with a leading `-`), not `Ticket-Management-System`. Verified: the hyphenated name exists; the name without hyphen does not.
+
+**Fix — push to the existing repo:**
+
+```bash
+cd ~/cursor-projects/Ticket-Management-System
+git remote set-url origin https://github.com/ckrsingh/-Ticket-Management-System.git
+git push -u origin main
+```
+
+**Or — rename on GitHub** (if you want a clean name without hyphen):
+
+1. Open https://github.com/ckrsingh/-Ticket-Management-System → **Settings** → **General** → Repository name → `Ticket-Management-System` → Rename.
+2. Then:
+
+```bash
+git remote set-url origin https://github.com/ckrsingh/Ticket-Management-System.git
+git push -u origin main
+```
+
 ## 1. Use the renamed folder
 
 After `mv ... ai-support-tickets ... Ticket-Management-System`, **do not** `cd` into `ai-support-tickets` (that path is gone).
 
 ```bash
-cd /home/chandan/cursor-projects/Ticket-Management-System
+cd ~/cursor-projects/Ticket-Management-System
 git remote -v
-# origin  https://github.com/ckrsingh/Ticket-Management-System.git
+# origin  https://github.com/ckrsingh/-Ticket-Management-System.git
 ```
 
 ## 2. Create the GitHub repo (if you have not)
@@ -33,7 +61,7 @@ HTTPS `git push` needs credentials. In a normal terminal (not a headless agent),
 sudo snap install gh   # or sudo apt install gh
 gh auth login
 gh auth setup-git
-cd /home/chandan/cursor-projects/Ticket-Management-System
+cd ~/cursor-projects/Ticket-Management-System
 git push -u origin main
 ```
 
@@ -79,4 +107,26 @@ git log -2 --oneline
 git remote -v
 ```
 
-Expected: branch `main`, 2 commits, `origin` → `https://github.com/ckrsingh/Ticket-Management-System.git`.
+Expected: branch `main`, commits on `main`, `origin` → `https://github.com/ckrsingh/-Ticket-Management-System.git` (unless you renamed the repo on GitHub).
+
+## 6. Keep work email out of commit history
+
+Git stores **author email in every commit**, not only in files. Use GitHub’s private noreply address (Settings → Emails → “Keep my email addresses private”):
+
+```bash
+git config user.email "ckrsingh@users.noreply.github.com"
+git config user.name "Chandan"
+```
+
+If commits were already created with a work email **before the first push**, rewrite local history:
+
+```bash
+FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --env-filter '
+export GIT_AUTHOR_NAME="Chandan"
+export GIT_AUTHOR_EMAIL="ckrsingh@users.noreply.github.com"
+export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+' -- main
+```
+
+If you already pushed, fixing history requires `git push --force-with-lease` (coordinate with anyone else using the repo).
